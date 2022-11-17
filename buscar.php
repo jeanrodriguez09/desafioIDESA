@@ -1,5 +1,11 @@
 <?php
 
+//La prueba la realice instalando XAMPP para el servicio de apache.
+//Descargue la extension SQLite3.dll para habilitar en xampp.
+//Modifique el php.ini (C://xampp/php/) insertando lo sigueinte: extension=sqlite3
+
+//Pruebo desde el navegador y desde Postman para verificar que funcione.
+
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
 
