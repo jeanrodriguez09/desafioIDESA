@@ -1,5 +1,8 @@
 <?php 
 
+header('Content-Type: application/json'); //Ayuda para darle mejor visibilidad al formato json.
+
+
 require_once 'Database.php';
 
 class DesafioUno {
@@ -9,8 +12,8 @@ class DesafioUno {
     {
         Database::setDB();
 
-        $lotes = self::getLotes();
-         
+        $lotes = self::getLotes();      
+            
         $cobrar['status']            = true;
         $cobrar['message']           = 'No hay Lotes para cobrar';
         $cobrar['data']['total']     = 0;
@@ -21,21 +24,21 @@ class DesafioUno {
         foreach($lotes as $lote){
 
         
-            if($lote->vencimiento || $lote->vencimiento > date('Y-m-d')) continue;
+            if($lote->vencimiento < date('Y-m-d')) continue; //Modificación de esta línea para realizar la lógica correcta. Esto servirá para traer los lotes a cobrar, debido a que traemos la fecha actual mayor a la fecha vencimiento de la base de datos.
 
 
-            if($lote->client_ID !== $clientID) continue;
-            
+            if($lote->client_ID == $clientID) continue; //Modificamos para que el ID del cliente se pueda relacionar.
+                
 
             
             $cobrar['status']             = false;
             $cobrar['message']            = 'Tienes Lotes para cobrar';
-            $cobrar['data']['total']     += $lote->monto;
+            $cobrar['data']['total']     += $lote->precio; // Línea modificada para porque "monto" no era el nombre de la columna sino "precio".
             $cobrar['data']['detail'][]   = (array) $lote;
  
         }
-
-        echo(json_encode($cobrar));
+        //echo json_encode($cobrar);
+        echo json_encode($cobrar, JSON_PRETTY_PRINT); // Ajustamos esta línea para el formato .json.
     }
 
     
